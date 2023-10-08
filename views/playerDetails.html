@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Details</title>
+    <style>
+        /* Add your CSS styles here */
+        .player-details-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .player-image {
+            max-width: 50%;
+        }
+
+        .player-info {
+            max-width: 45%;
+        }
+
+        .player-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Player Details</h1>
+
+    <div class="player-details-container">
+        <div class="player-image">
+            <img src="" alt="Player Image" id="playerImage">
+        </div>
+        <div class="player-info">
+            <h2>Player Career Details</h2>
+            <p>Name: <span id="playerName"></span></p>
+            <p>Birthplace: <span id="playerBirthplace"></span></p>
+            <p>Matches: <span id="playerMatches"></span></p>
+            <p>Score: <span id="playerScore"></span></p>
+            <p>Fifties: <span id="playerFifties"></span></p>
+            <p>Centuries: <span id="playerCenturies"></span></p>
+            <p>Wickets: <span id="playerWickets"></span></p>
+            <p>Average: <span id="playerAverage"></span></p>
+            <p>Career: <span id="playerCareer"></span></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const playerNameInput = document.getElementById('playerName');
+        const playerImage = document.getElementById('playerImage');
+        const playerBirthplace = document.getElementById('playerBirthplace');
+        const playerMatches = document.getElementById('playerMatches');
+        const playerScore = document.getElementById('playerScore');
+        const playerFifties = document.getElementById('playerFifties');
+        const playerCenturies = document.getElementById('playerCenturies');
+        const playerWickets = document.getElementById('playerWickets');
+        const playerAverage = document.getElementById('playerAverage');
+        const playerCareer = document.getElementById('playerCareer');
+
+        // Function to fetch and populate player details
+        async function populatePlayerDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const playerName = params.get('name');
+            playerNameInput.textContent = decodeURIComponent(playerName);
+
+            try {
+                const response = await axios.get(`/api/player/${encodeURIComponent(playerName)}`);
+                const player = response.data;
+                // Populate player details
+                playerImage.src = player.url;
+                playerBirthplace.textContent = player.birthplace;
+                playerMatches.textContent = player.matches;
+                playerScore.textContent = player.score;
+                playerFifties.textContent = player.fifties;
+                playerCenturies.textContent = player.centuries;
+                playerWickets.textContent = player.wicket;
+                playerAverage.textContent = player.average;
+                playerCareer.textContent = player.career;
+            } catch (error) {
+                console.error('Player not found:', error);
+                // Handle player not found error
+            }
+        }
+
+        populatePlayerDetails();
+    </script>
+</body>
+</html>
