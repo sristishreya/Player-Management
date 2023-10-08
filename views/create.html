@@ -61,7 +61,7 @@
             e.preventDefault();
             const formData = new FormData(playerForm);
             try {
-                const response = await axios.post('/api/player', formData);
+                const response = await axios.post('/api/player', Object.fromEntries(formData));
                 console.log('Player created:', response.data);
                 // Clear form after successful creation
                 playerForm.reset();
